@@ -1,0 +1,4 @@
+{"timestamp":"2025-07-26T15:26:08.307577","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-07-26T15:26:08.308897","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/extract_breweries_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-07-26T15:26:10.189377Z","level":"info","event":"Dados das cervejarias extraídos e salvos em: /tmp/airflow_data/breweries_data.json","chan":"stdout","logger":"task"}
+{"timestamp":"2025-07-26T15:26:10.190724","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
