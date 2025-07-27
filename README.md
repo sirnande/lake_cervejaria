@@ -6,39 +6,60 @@ Processo de ETL caso de cervejaria
 ### Instalação do Docker no Windows
 Para configurar o ambiente de desenvolvimento, primeiramente você precisará instalar o Docker Desktop no seu sistema operacional Windows. Siga os passos no link: https://docs.docker.com/desktop/setup/install/windows-install/
 
-### Instalação do Airflow Usando Docker
-Com o Docker instalado, podemos prosseguir para a instalação do Apache Airflow usando Docker Compose, que é a maneira recomendada para configurar o Airflow para desenvolvimento e produção.
 
-1. **Crie um Diretório para o Projeto:** Crie uma pasta vazia onde você irá armazenar os arquivos do projeto Airflow na raiz. Por exemplo, `C:\lake_cervejaria`.
+## Projeto de Engenharia de Dados
 
-### Instalação do Airflow Usando Docker
+### Rodando o projeto pela primeira vez
 
 Com o Docker instalado, vamos configurar o Apache Airflow usando Docker Compose.
 
-1.  **Crie um Diretório para o Projeto:** Crie uma pasta vazia para seu projeto Airflow, por exemplo, `C:\airflow_project`.
-2.  **Baixe o `docker-compose.yaml` do Airflow:** No terminal, navegue até a pasta que você criou e baixe o arquivo:
-    ```bash
-    curl -LfO '[https://airflow.apache.org/docs/apache-airflow/2.9.2/docker-compose.yaml](https://airflow.apache.org/docs/apache-airflow/2.9.2/docker-compose.yaml)'
-    ```
-    *Para a versão mais atualizada, verifique o site oficial do Airflow.*
-3.  **Crie as Pastas Necessárias:** Crie as subpastas `dags`, `logs`, `plugins` e `config` dentro do seu diretório do projeto. Crie também um arquivo `.env` com o conteúdo `AIRFLOW_UID=50000`.
+1.  **Clonar o projeto na raiz do sistema na C:\ .** 
+
+Caso tenha configurado a sua chave ssh no github:
+
+```bash
+git clone git@github.com:sirnande/lake_cervejaria.git
+```
+
+Caso queira usar a sua conta do github:
+
+```bash
+git clone https://github.com/sirnande/lake_cervejaria.git
+```
+ 
+2.  **Crie as Pastas Necessárias:** Caso não tenha as seguintes pasta criar dentro do projeto: `dags`, `logs`, `plugins` e `config`. Crie também um arquivo `.env` com o conteúdo `AIRFLOW_UID=50000`.
     * No Windows, você pode criar as pastas manualmente e o arquivo `.env` usando um editor de texto.
-4.  **Inicialize o Banco de Dados do Airflow:** Antes de iniciar os serviços, inicialize o banco de dados do Airflow:
+3.  **Inicialize o Banco de Dados do Airflow:** Antes de iniciar os serviços, inicialize o banco de dados do Airflow:
     ```bash
     docker compose up airflow-init
     ```
     Aguarde a conclusão.
-5.  **Inicie os Serviços do Airflow:** Agora, inicie todos os serviços do Airflow em segundo plano:
+4.  **Inicie os Serviços do Airflow:** Agora, inicie todos os serviços do Airflow em segundo plano:
     ```bash
     docker compose up -d
     ```
-6.  **Acesse a UI do Airflow:** Após alguns minutos, o Airflow estará disponível. Acesse a interface de usuário em seu navegador: `http://localhost:8080`. As credenciais padrão são `airflow` para usuário e senha.
+5.  **Acesse a UI do Airflow:** Após alguns minutos, o Airflow estará disponível. Acesse a interface de usuário em seu navegador: `http://localhost:8080`. As credenciais padrão são `airflow` para usuário e senha.
 
----
+6.  **Configurar conexção com o posgres no airflow:** Após que tiver logado acessa no airflow:
 
-## Projeto de Engenharia de Dados
-comando
-inciando airflow
+    1. Admin -> Connections
+    2. Butão add connection
+        1. Connection ID: postgres_default
+        2. Connection Type: Postgres
+        3. Host: host.docker.internal
+        4. Login: airflow
+        5. Password: airflow
+        6. Port: 5432
+        7. Database: airflow
+
+### Rodando o projeto dia a dia
+
+start nos serviços do airflow
 ```bash
-    docker compose up -d
+docker compose up -d
+```
+
+stop nos serviços do airflow no docker
+```bash
+docker compose down
 ```
