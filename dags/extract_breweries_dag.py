@@ -1,3 +1,4 @@
+import json
 from airflow import DAG
 from airflow.providers.standard.operators.empty import EmptyOperator
 from airflow.providers.standard.operators.python import PythonOperator
@@ -5,14 +6,15 @@ from datetime import date
 import requests
 import pendulum
 import pandas as pd
-
 import os
 
 
 def extract_breweries_data(**kwargs):
-    data_atual = date.today() # Em um projeto real usariamos a data de execução da dag
-    api_url = "https://api.openbrewerydb.org/v1/breweries" # Em um projeto real esta informação estaria no airflow
-    output_dir = "/tmp/airflow_data"  # Em um projeto real esta informação estaria no airflow
+    data_atual = date.today()  # Em um projeto real usariamos a data de execução da dag
+    api_url = "https://api.openbrewerydb.org/v1/breweries"  # Em um projeto real esta informação estaria no airflow
+    output_dir = (
+        "/tmp/airflow_data"  # Em um projeto real esta informação estaria no airflow
+    )
     file_name = f"breweries_data_{str(data_atual).replace('-', '_')}.json"
     output_file = os.path.join(output_dir, file_name)
 
@@ -20,12 +22,12 @@ def extract_breweries_data(**kwargs):
 
     try:
         response = requests.get(api_url)
-        response.raise_for_status() 
+        response.raise_for_status()
         breweries_data = response.json()
 
         if breweries_data:
-            df = pd.DataFrame(breweries_data)
-            df.to_json(output_file, index=False)
+            with open(output_file, "w", encoding="utf-8") as f:
+                json.dump(breweries_data, f, ensure_ascii=False, indent=4)
             print(f"Dados das cervejarias extraídos e salvos em: {output_file}")
         else:
             print("Nenhum dado de cervejaria retornado pela API.")
