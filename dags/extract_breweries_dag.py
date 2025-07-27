@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.providers.standard.operators.empty import EmptyOperator
 from airflow.providers.standard.operators.python import PythonOperator
+from datetime import date
 import requests
 import pendulum
 import pandas as pd
@@ -9,9 +10,11 @@ import os
 
 
 def extract_breweries_data(**kwargs):
-    api_url = "https://api.openbrewerydb.org/v1/breweries"
-    output_dir = "/tmp/airflow_data"  
-    output_file = os.path.join(output_dir, "breweries_data.json")
+    data_atual = date.today() # Em um projeto real usariamos a data de execução da dag
+    api_url = "https://api.openbrewerydb.org/v1/breweries" # Em um projeto real esta informação estaria no airflow
+    output_dir = "/tmp/airflow_data"  # Em um projeto real esta informação estaria no airflow
+    file_name = f"breweries_data_{str(data_atual).replace('-', '_')}.json"
+    output_file = os.path.join(output_dir, file_name)
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -38,7 +41,7 @@ def extract_breweries_data(**kwargs):
 with DAG(
     dag_id="extract_breweries_api_data",
     schedule="0 8 * * *",
-    start_date=pendulum.datetime(2025, 7, 25, 00, 10, tz="America/Sao_Paulo"),
+    start_date=pendulum.datetime(2025, 7, 20, 00, 10, tz="America/Sao_Paulo"),
     catchup=True,
 ) as dag:
     start = EmptyOperator(task_id="start")
