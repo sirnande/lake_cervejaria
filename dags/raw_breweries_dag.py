@@ -43,7 +43,7 @@ def raw_breweries(**kwargs):
         # Ser criada a parte
         create_table_sql = f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
-            id VARCHAR(255) PRIMARY KEY,
+            id VARCHAR(255),
             name VARCHAR(255),
             brewery_type VARCHAR(50),
             address_1 VARCHAR(255),
